@@ -25,28 +25,51 @@ should return a dictionary with words as keys, and their counts as values.
 
 # Your name, plus anyone who helped you with this assignment
 # Give credit where credit is due.
-__author__ = "???"
+__author__ = "Iris Hoffmeyer https://www.pythoncentral.io/how-to-sort-python-dictionaries-by-key-or-value/ https://stackoverflow.com/a/613218"
 
 import sys
 
 
 def create_word_dict(filename):
     """Returns a word/count dict for the given file."""
-    # Your code here
-    return
+    dictionary = {}
+    with open(filename) as f:
+        for line in f:
+            line = line.lower().split()
+            for word in line:
+                if word in dictionary:
+                    dictionary[word] += 1
+                else:
+                    dictionary[word] = 1
+
+    return dictionary
 
 
 def print_words(filename):
     """Prints one per line '<word> : <count>', sorted
     by word for the given file.
     """
-    # Your code here
+    word_dict = create_word_dict(filename)
+    sorted_word_list = sorted(word_dict)
+    for word in sorted_word_list:
+        print("{} : {}".format(word, word_dict[word]))
     return
 
 
 def print_top(filename):
     """Prints the top count listing for the given file."""
-    # Your code here
+    word_dict = create_word_dict(filename)
+    # Look mah, comprehensions!!
+    sorted_word_dict = {key: value for key, value in sorted(
+        word_dict.items(), key=lambda count: count[1], reverse=True)}
+    count = 0
+    for word in sorted_word_dict:
+        if count <= 20:
+            count += 1
+            print("{} : {}".format(word, word_dict[word]))
+        else:
+            # We've gone through all 20 iterations, we no longer need to loop
+            break
     return
 
 
